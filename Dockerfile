@@ -18,10 +18,9 @@ FROM alpine:3.12
 WORKDIR /dns-proxy
 
 COPY --from=build /project/server .
-COPY config.json ./config/config.json
+COPY config.json ./config.json
 
-ENV CONFIG_PATH=/dns-proxy/config/config.json
-VOLUME /dns-proxy/config/
+ENV CONFIG_PATH=/dns-proxy/config.json
 EXPOSE 53/udp 80 443
 
 RUN chmod +x /dns-proxy/server

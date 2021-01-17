@@ -28,6 +28,7 @@ go run main.go
 
     ```shell script
     docker run -itd \
+      -v /path/to/config.json:/dns-proxy/config.json \
       -p 53:53/udp \
       -p 80:80 \
       -p 443:443 \
