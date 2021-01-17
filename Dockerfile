@@ -21,7 +21,7 @@ COPY --from=build /project/server .
 COPY config.json ./config.json
 
 ENV CONFIG_PATH=/dns-proxy/config.json
-EXPOSE 53/udp 80 443
+EXPOSE 53/udp
 
 RUN chmod +x /dns-proxy/server
 
