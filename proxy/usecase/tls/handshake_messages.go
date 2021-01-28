@@ -17,11 +17,11 @@ func readUint8LengthPrefixed(s *cryptobyte.String, out *[]byte) bool {
 }
 
 type ClientHelloMsg struct {
-	raw                              []byte
-	vers                             uint16
-	random                           []byte
-	sessionId                        []byte
-	ServerName                       string
+	raw        []byte
+	vers       uint16
+	random     []byte
+	sessionId  []byte
+	ServerName string
 }
 
 func (m *ClientHelloMsg) Unmarshal(data []byte) bool {
@@ -50,11 +50,10 @@ func (m *ClientHelloMsg) Unmarshal(data []byte) bool {
 		return true
 	}
 
-	var extensions cryptobyte.String
-	if !s.ReadUint16LengthPrefixed(&extensions) || !s.Empty() {
-		return false
-	}
+	s.Skip(2) // Compression Methods
+	s.Skip(2) // Extensions Length
 
+	var extensions = s
 	for !extensions.Empty() {
 		var extension uint16
 		var extData cryptobyte.String
@@ -90,6 +89,7 @@ func (m *ClientHelloMsg) Unmarshal(data []byte) bool {
 				if strings.HasSuffix(m.ServerName, ".") {
 					return false
 				}
+				return true
 			}
 		default:
 			// Ignore unknown extensions.

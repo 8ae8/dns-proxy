@@ -45,7 +45,7 @@ func (uc *dnsUc) LookupHost(host string) (ip string, err error) {
 	if len(resp.Answer) == 0 {
 		return
 	}
-	switch ans := resp.Answer[0].(type) {
+	switch ans := resp.Answer[len(resp.Answer)-1].(type) {
 	case *dns.A:
 		return ans.A.String(), nil
 	case *dns.CNAME:

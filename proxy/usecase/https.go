@@ -102,7 +102,7 @@ func (c *httpsConn) serve(ctx context.Context) {
 			c.rwc.Close()
 			return
 		}
-		data = hand.Next(4 + l)
+		data = hand.Next(l)
 		if data[0] == 1 {
 			// client hello
 			m := new(tls.ClientHelloMsg)
