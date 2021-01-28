@@ -5,3 +5,6 @@
 
 # temp directory/file
 temp
+
+# config file
+config.json
