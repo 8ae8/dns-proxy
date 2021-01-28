@@ -18,7 +18,7 @@ FROM alpine:3.12
 WORKDIR /dns-proxy
 
 COPY --from=build /project/server .
-COPY config.json ./config.json
+COPY config.sample.json ./config.json
 
 ENV CONFIG_PATH=/dns-proxy/config.json
 EXPOSE 53/udp
