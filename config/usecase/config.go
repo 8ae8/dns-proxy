@@ -22,6 +22,7 @@ func NewConfig(path string) domain.UseCaseModel {
 	if err != nil {
 		panic(err)
 	}
+	cfg.Initialize()
 	uc := &config{
 		path: path,
 		cfg:  cfg,
@@ -47,18 +48,10 @@ func (c *config) NextServer() interface{} {
 	return s
 }
 
-func (c *config) GetNameServer() map[string]interface{} {
+func (c *config) GetNameServer() domain.NameServer {
 	return c.cfg.NameServers[0]
 }
 
-func (c *config) GetSecondaryNameServers() []map[string]interface{} {
+func (c *config) GetSecondaryNameServers() []domain.NameServer {
 	return c.cfg.NameServers[1:]
-}
-
-func (c *config) GetNsHost(ns map[string]interface{}) string {
-	return ns["host"].(string)
-}
-
-func (c *config) GetNsNet(ns map[string]interface{}) string {
-	return ns["net"].(string)
 }

@@ -22,11 +22,11 @@ func NewDns(config domain.ConfigModel) domain.UseCase {
 func (uc *dnsUc) lookup(m *dns.Msg) (*dns.Msg, error) {
 	for _, server := range uc.config.GetSecondaryNameServers() {
 		dnsClient := new(dns.Client)
-		dnsClient.Net = uc.config.GetNsNet(server)
-		response, _, err := dnsClient.Exchange(m, uc.config.GetNsHost(server))
+		dnsClient.Net = server.Net
+		response, _, err := dnsClient.Exchange(m, server.Addr)
 		if err != nil {
 			log.Printf("error on lookup Exchange for server %s, err: %v",
-				server, err)
+				server.Addr, err)
 			continue
 		}
 		return response, nil

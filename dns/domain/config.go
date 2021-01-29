@@ -1,15 +1,14 @@
 package domain
 
-type ConfigModel interface {
-	// name servers would be map containing information of
-	// host: 1.2.3.4
-	// net: tcp
-	// net: tcp-tls
-	// net: udp
-	GetNameServer() map[string]interface{}
-	GetSecondaryNameServers() []map[string]interface{}
-	GetIP(address string) (ip string)
+import (
+	cd "github.com/saeed-kamyabi/dns-proxy/config/domain"
+)
 
-	GetNsHost(ns map[string]interface{}) string
-	GetNsNet(ns map[string]interface{}) string
+type ConfigModel interface {
+	// name server contains information of exposing name server
+	GetNameServer() cd.NameServer
+	// name servers would be list of servers containing
+	// information of secondary name servers
+	GetSecondaryNameServers() []cd.NameServer
+	GetIP(address string) (ip string)
 }
