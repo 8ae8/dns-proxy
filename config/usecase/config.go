@@ -30,11 +30,11 @@ func NewConfig(path string) domain.UseCaseModel {
 }
 
 func (c *config) GetSecondaryDnsServers() []string {
-	return c.cfg.DnsServers
+	return c.cfg.NameServers
 }
 
 func (c *config) GetDnsServerHost() string {
-	return c.cfg.DnsServerHost
+	return c.cfg.DnsHost
 }
 
 func (c *config) GetIP(domain string) (ip string) {

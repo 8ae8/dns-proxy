@@ -1,6 +1,6 @@
 {
-  "dnsServerHost": "0.0.0.0:53",
-  "dnsServers": [
+  "dnsHost": "0.0.0.0:53",
+  "nameServers": [
     "8.8.8.8:53"
   ],
   "domains": {
