@@ -42,6 +42,11 @@ go run main.go
 ```shell script
 sudo systemctl stop systemd-resolved
 ```
+if it didn't work, try
+```shell script
+sudo lsof -i :53
+```
+then try to stop services listening to port 53(for example `sudo systemctl stop dbsmasq`) 
 
 ### Configuration
 

@@ -29,14 +29,6 @@ func NewConfig(path string) domain.UseCaseModel {
 	return uc
 }
 
-func (c *config) GetSecondaryDnsServers() []string {
-	return c.cfg.NameServers
-}
-
-func (c *config) GetDnsServerHost() string {
-	return c.cfg.DnsHost
-}
-
 func (c *config) GetIP(domain string) (ip string) {
 	for k, v := range c.cfg.Domains {
 		match, _ := regexp.MatchString(k+"\\.", domain)
@@ -53,4 +45,20 @@ func (c *config) NextServer() interface{} {
 		return nil
 	}
 	return s
+}
+
+func (c *config) GetNameServer() map[string]interface{} {
+	return c.cfg.NameServers[0]
+}
+
+func (c *config) GetSecondaryNameServers() []map[string]interface{} {
+	return c.cfg.NameServers[1:]
+}
+
+func (c *config) GetNsHost(ns map[string]interface{}) string {
+	return ns["host"].(string)
+}
+
+func (c *config) GetNsNet(ns map[string]interface{}) string {
+	return ns["net"].(string)
 }

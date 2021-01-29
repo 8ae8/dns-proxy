@@ -28,7 +28,7 @@ func main() {
 			s.ListenAndServe()
 		}(server)
 	}
-	log.Printf("Starting dns server at %s\n", cfg.GetDnsServerHost())
+	log.Printf("Starting dns server at %s\n", cfg.GetNsHost(cfg.GetNameServer()))
 	err := dnsServer.ListenAndServe()
 	if err != nil {
 		log.Printf("Failed to start server: %s\n ", err.Error())

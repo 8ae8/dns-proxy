@@ -1,7 +1,13 @@
 {
-  "dnsHost": "0.0.0.0:53",
   "nameServers": [
-    "8.8.8.8:53"
+    {
+      "host": "0.0.0.0:53",
+      "net": "tcp-tls"
+    },
+    {
+      "host": "8.8.8.8:53",
+      "net": "udp"
+    }
   ],
   "domains": {
     "test.com": "127.0.0.1"

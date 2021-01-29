@@ -14,10 +14,11 @@ type server struct {
 }
 
 func NewServer(config domain.ConfigModel, uc domain.UseCase) domain.ServerModel {
+	ns := config.GetNameServer()
 	s := &server{
 		Server: dns.Server{
-			Addr: config.GetDnsServerHost(),
-			Net:  "udp",
+			Addr: ns["host"].(string),
+			Net:  ns["net"].(string),
 		},
 		config: config,
 		uc:     uc,

@@ -20,10 +20,10 @@ func NewDns(config domain.ConfigModel) domain.UseCase {
 }
 
 func (uc *dnsUc) lookup(m *dns.Msg) (*dns.Msg, error) {
-	dnsClient := new(dns.Client)
-	dnsClient.Net = "udp"
-	for _, server := range uc.config.GetSecondaryDnsServers() {
-		response, _, err := dnsClient.Exchange(m, server)
+	for _, server := range uc.config.GetSecondaryNameServers() {
+		dnsClient := new(dns.Client)
+		dnsClient.Net = uc.config.GetNsNet(server)
+		response, _, err := dnsClient.Exchange(m, uc.config.GetNsHost(server))
 		if err != nil {
 			log.Printf("error on lookup Exchange for server %s, err: %v",
 				server, err)
@@ -64,7 +64,7 @@ func (uc *dnsUc) GetResponse(requestMsg *dns.Msg) (*dns.Msg, error) {
 			if err != nil {
 				return responseMsg, err
 			}
-			responseMsg.Answer = append(responseMsg.Answer, *answer)
+			responseMsg.Answer = append(responseMsg.Answer, answer)
 		default:
 			answer, err := uc.processOtherTypes(&question, requestMsg)
 			if err != nil {
@@ -95,13 +95,13 @@ func (uc *dnsUc) processOtherTypes(q *dns.Question,
 }
 
 func (uc *dnsUc) processTypeA(q *dns.Question,
-	requestMsg *dns.Msg) (*dns.RR, error) {
+	requestMsg *dns.Msg) (dns.RR, error) {
 	if ip := uc.config.GetIP(q.Name); ip != "" {
 		answer, err := dns.NewRR(fmt.Sprintf("%s A %s", q.Name, ip))
 		if err != nil {
 			return nil, err
 		}
-		return &answer, nil
+		return answer, nil
 	} else {
 		queryMsg := new(dns.Msg)
 		requestMsg.CopyTo(queryMsg)
@@ -111,7 +111,12 @@ func (uc *dnsUc) processTypeA(q *dns.Question,
 			return nil, err
 		}
 		if len(msg.Answer) > 0 {
-			return &msg.Answer[len(msg.Answer)-1], nil
+			for i := len(msg.Answer) - 1; i >= 0; i-- {
+				if _, ok := msg.Answer[i].(*dns.A); ok {
+					return msg.Answer[i], nil
+				}
+			}
+			return msg.Answer[len(msg.Answer)-1], nil
 		}
 	}
 	return nil, fmt.Errorf("not found")

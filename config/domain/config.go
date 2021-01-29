@@ -1,8 +1,7 @@
 package domain
 
 type Config struct {
-	DnsHost     string
-	NameServers []string
+	NameServers []map[string]interface{}
 	Domains     map[string]string
 	Servers     Servers
 }
